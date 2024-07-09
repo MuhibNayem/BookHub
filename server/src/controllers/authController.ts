@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
+
 import UserModel from '../models/User';
 import { User } from '../types/user';
+import { comparePasswords } from '../utils/bcrypt';
 
 const JWT_SECRET =
   process.env.JWT_SECRET || 'b3e63aeb-d1aa-414d-9f9f-3f811f89d623';
@@ -20,7 +21,7 @@ export const login = async (
       return res.status(404).json({ message: 'User not found' });
     }
 
-    const passwordValid = await bcrypt.compare(password, user.password);
+    const passwordValid = await comparePasswords(password, user.password);
 
     if (!passwordValid) {
       return res.status(401).json({ message: 'Invalid credentials' });

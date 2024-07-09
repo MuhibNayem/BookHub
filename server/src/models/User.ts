@@ -1,5 +1,5 @@
 import { knexInstance } from '../db/knex';
-import bcrypt from 'bcryptjs';
+import { hashPassword } from '../utils/bcrypt';
 
 class UserModel {
   static async findByUsername(username: string) {
@@ -7,7 +7,7 @@ class UserModel {
   }
 
   static async createUser(username: string, password: string, role: string) {
-    const passwordHash = await bcrypt.hash(password, 10);
+    const passwordHash = await hashPassword(password);
     const [user] = await knexInstance('users')
       .insert({ username, password: passwordHash, role })
       .returning('*');
