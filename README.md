@@ -1,4 +1,4 @@
-# Product Listing Application
+# Book Hub Application
 
 ## Prerequisites
 
